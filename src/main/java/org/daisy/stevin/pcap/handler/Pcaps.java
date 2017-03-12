@@ -1,10 +1,21 @@
 package org.daisy.stevin.pcap.handler;
 
-/**
- * Created by shaoyang.qi on 2017/3/5.
- */
+import org.daisy.stevin.pcap.util.NoThrow;
+import org.daisy.stevin.pcap.util.StringUtil;
+
+import java.io.FileInputStream;
+
 public class Pcaps {
-    public static void main(String[] args){
-        System.out.println("Hello world!");
+    public static PcapHandle openOfflineFile(String filePath) {
+        if (StringUtil.isEmpty(filePath)) {
+            return null;
+        }
+        
+        PcapHandle handle = NoThrow.execute(() -> {
+            FileInputStream fis = new FileInputStream(filePath);
+            return new PcapHandle(fis);
+        }, (e) -> null);
+
+        return handle;
     }
 }
